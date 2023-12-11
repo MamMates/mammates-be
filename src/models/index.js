@@ -9,6 +9,7 @@ import {
   OrderStatus,
   Transaction,
 } from './model_relations.js';
+import initialMigrate from './migrate.js';
 
 export {
   Account,
@@ -20,4 +21,5 @@ export {
   OrderDetail,
   OrderStatus,
   Transaction,
+  initialMigrate,
 };
