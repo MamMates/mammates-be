@@ -1,0 +1,30 @@
+{
+  "name": "mammates-be",
+  "version": "1.0.0",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MamMates/mammates-be.git"
+  },
+  "main": "app.js",
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "nodemon": "^3.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/MamMates/mammates-be/issues"
+  },
+  "description": "MamMates backend service",
+  "homepage": "https://github.com/MamMates/mammates-be#readme",
+  "license": "ISC",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "bun src/app.js",
+    "lint": "eslint ./",
+    "mon": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module"
+}
