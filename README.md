@@ -105,11 +105,11 @@ Backend service of seller and buyer app of MamMates.
 ## Respose
 ```json
 {
-    status: true,
-    code: 200,
-    message: 'get data success',
-    data: {
-        foods: {
+    "status": true,
+    "code": 200,
+    "message": "get data success",
+    "data": {
+        "foods": {
 
         }
     }
