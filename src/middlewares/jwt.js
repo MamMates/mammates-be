@@ -1,4 +1,4 @@
-import jwt, { decode } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { Account } from '../models/index.js';
 
 const createToken = (payload) => {
@@ -26,10 +26,5 @@ const verifyToken = async (token, requiredRole) => {
 
   return true;
 };
-// console.log(createToken({ id: 'iudsfsfuidfsa', role: 1 }));
-console.log(
-  await verifyToken(
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Iml1ZHNmc2Z1aWRmc2EiLCJyb2xlIjoxLCJpYXQiOjE3MDIzNTIyMTZ9.Cf-HRLTl1DB4a6H6ZbRtrQlGkxmJkKdsxcwNpcrOcAY',
-    1,
-  ),
-);
+
+export { createToken, verifyToken };
