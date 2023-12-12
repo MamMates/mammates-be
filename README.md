@@ -15,9 +15,9 @@ Backend service of seller and buyer app of MamMates.
 - ESLint for linting
 
 ## Storage
-    - MySQL
-    - Cloud SQL for MySQL
-    - Cloud Storage
+- MySQL
+- Cloud SQL for MySQL
+- Cloud Storage
 
 ## Infrastructure
 - Google Cloud Platform
@@ -110,7 +110,7 @@ Backend service of seller and buyer app of MamMates.
     message: 'get data success',
     data: {
         foods: {
-            
+
         }
     }
 }
