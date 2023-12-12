@@ -44,6 +44,10 @@ OrderStatus.hasMany(Order);
 Order.belongsTo(OrderStatus, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+  foreignKey: {
+    allowNull: false,
+    defaultValue: 1,
+  },
 });
 
 Order.hasMany(OrderDetail);
