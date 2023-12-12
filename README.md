@@ -88,11 +88,11 @@ Backend service of seller and buyer app of MamMates.
 5. Uncomment `await initialMigrate()` and it's module import on `src/app.js`
 6. Run for the first time
     ```bash
-    npm dev
+    npm run dev
     ```
     or
     ```bash
-    npm dev
+    bun dev
     ```
 7. Recomment lines on 5th step
 
