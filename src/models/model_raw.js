@@ -45,6 +45,7 @@ const merchant = {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: DataTypes.STRING,
     line: DataTypes.STRING,
     subdistrict: DataTypes.STRING,
     city: DataTypes.STRING,

@@ -10,14 +10,4 @@ const sequelize = new Sequelize(
   },
 );
 
-// const sequelize = new Sequelize({
-//   dialect: 'mysql',
-//   dialectOptions: {
-//     socketPath: '/cloudsql/mammates:us-central1:mammates',
-//   },
-//   database: 'mammates',
-//   username: 'mammates',
-//   password: 'MamMates2023',
-// });
-
 export default sequelize;
