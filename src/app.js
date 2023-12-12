@@ -1,6 +1,9 @@
 import 'dotenv/config';
-import { startServer } from './pkg/index.js';
-// import initialMigrate from './models/migrate.js';
+import { app, startServer } from './pkg/index.js';
+import injectApp from './routes/index.js';
+// import initialMigrate from './models/index.js';
 
 // await initialMigrate();
-startServer();
+
+const injectedApp = injectApp(app);
+startServer(injectedApp);
