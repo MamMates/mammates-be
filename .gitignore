@@ -178,4 +178,7 @@ dist
 ### dotenv ###
 .env
 
+### local-dev ###
+local
+
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,linux

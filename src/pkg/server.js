@@ -1,8 +1,10 @@
 import express from 'express';
 
-const startServer = () => {
-  const app = express();
-  app.listen(process.env.PORT);
+const app = express();
+app.use(express.json());
+
+const startServer = (appInject) => {
+  appInject.listen(process.env.PORT);
 };
 
-export default startServer;
+export { app, startServer };
