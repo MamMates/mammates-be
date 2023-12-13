@@ -33,7 +33,7 @@ Backend service of seller and buyer app of MamMates.
 │   ├── dto/
 │   │   ├── request/
 │   │   │   ├── index.js
-│   │   │   ├── auth_request.js
+│   │   │   ├── auth_dto.js
 │   │   │   └── ...
 │   │   └── response/
 │   │       ├── index.js
@@ -54,6 +54,10 @@ Backend service of seller and buyer app of MamMates.
 │   ├── routes/
 │   │   ├── index.js
 │   │   ├── auth_route.js
+│   │   └── ...
+│   ├── validators/
+│   │   ├── index.js
+│   │   ├── auth_validator.js
 │   │   └── ...
 │   └── app.js
 ├── .env
