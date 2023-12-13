@@ -91,7 +91,6 @@ const food = {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    added_time: DataTypes.DATE,
     stock: DataTypes.INTEGER,
   },
   options: {

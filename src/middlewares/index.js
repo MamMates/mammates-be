@@ -1,3 +1,4 @@
 import { createToken, verifyToken } from './jwt.js';
+import fileUploadError from './file_upload_error.js';
 
-export { createToken, verifyToken };
+export { createToken, verifyToken, fileUploadError };

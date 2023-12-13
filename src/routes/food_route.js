@@ -1,0 +1,37 @@
+import express from 'express';
+import multer from 'multer';
+import { fileUploadError, verifyToken } from '../middlewares/index.js';
+import { addNewFoodHandler } from '../controller/index.js';
+import Response from '../dto/responses/index.js';
+
+const upload = multer({
+  limits: {
+    fileSize: 2000000,
+  },
+  fileFilter: (req, file, cb) => {
+    const validMimeType = [
+      'image/jpeg',
+      'image/webp',
+      'image/png',
+      'image/bmp',
+    ];
+    if (!validMimeType.includes(file.mimetype)) {
+      cb(new Error('invalid file type'), false);
+    }
+    cb(null, true);
+  },
+  storage: multer.memoryStorage(),
+});
+
+const foodUpload = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'mam_image', maxCount: 1 },
+]);
+
+const foodRouter = express.Router();
+
+foodRouter.post('/', verifyToken(1), foodUpload, addNewFoodHandler);
+
+foodRouter.use(fileUploadError);
+
+export default foodRouter;
