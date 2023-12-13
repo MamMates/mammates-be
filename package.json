@@ -28,14 +28,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@google-cloud/cloud-sql-connector": "^1.2.0",
-    "@googlemaps/google-maps-services-js": "^3.3.41",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "firebase": "^10.7.1",
-    "joi": "^17.11.0",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.6.5",
-    "sequelize": "^6.35.1"
+    "express": "^4.18.2"
   }
 }
