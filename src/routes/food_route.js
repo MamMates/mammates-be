@@ -1,7 +1,11 @@
 import express from 'express';
 import multer from 'multer';
 import { fileUploadError, verifyToken } from '../middlewares/index.js';
-import { addNewFoodHandler, getAllFoodsHandler } from '../controller/index.js';
+import {
+  addNewFoodHandler,
+  getAllFoodsHandler,
+  getSingleFoodHandler,
+} from '../controller/index.js';
 
 const upload = multer({
   limits: {
@@ -31,6 +35,7 @@ const foodRouter = express.Router();
 
 foodRouter.post('/', verifyToken(1), foodUpload, addNewFoodHandler);
 foodRouter.get('/', verifyToken(1), getAllFoodsHandler);
+foodRouter.get('/:foodId', verifyToken(1), getSingleFoodHandler);
 
 foodRouter.use(fileUploadError);
 

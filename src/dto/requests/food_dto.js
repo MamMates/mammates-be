@@ -11,4 +11,17 @@ const allFoods = () => {
   return data;
 };
 
-export default allFoods;
+const singleFood = () => {
+  const data = {
+    name: '',
+    category: '',
+    price: 0,
+    mam_rates: 0,
+    image: '',
+    mam_image: '',
+  };
+
+  return data;
+};
+
+export { allFoods, singleFood };

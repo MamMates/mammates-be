@@ -1,3 +1,3 @@
-import allFoods from './food_dto.js';
+import { allFoods, singleFood } from './food_dto.js';
 
-export default allFoods;
+export { allFoods, singleFood };

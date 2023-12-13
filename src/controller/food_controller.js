@@ -4,7 +4,7 @@ import Response from '../dto/responses/index.js';
 import createFilename from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
 import sequelize from '../pkg/orm.js';
-import allFoods from '../dto/requests/index.js';
+import { allFoods, singleFood } from '../dto/requests/index.js';
 
 const addNewFoodHandler = async (req, res) => {
   let response;
@@ -69,10 +69,7 @@ const getAllFoodsHandler = async (req, res) => {
       attributes: ['id', 'name', 'price', 'rating', 'image', 'last_photo', 'updatedAt'],
     },
   })
-    .then((merchant) => {
-      const foods = merchant.Food;
-      return foods;
-    })
+    .then((merchant) => merchant.Food)
     .catch((error) => {
       const err = new Error(error);
       return err;
@@ -104,4 +101,56 @@ const getAllFoodsHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
-export { addNewFoodHandler, getAllFoodsHandler };
+const getSingleFoodHandler = async (req, res) => {
+  let response;
+  const { foodId } = req.params;
+  const { decodedToken } = res.locals;
+
+  if (foodId <= 0) {
+    response = Response.defaultBadRequest(null);
+    return res.status(response.code).json(response);
+  }
+
+  const merchantFood = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    include: {
+      model: Food,
+      attributes: ['name', 'price', 'rating', 'image', 'last_photo', 'FoodCategoryId'],
+      where: {
+        id: foodId,
+      },
+    },
+  })
+    .then((merchant) => merchant.Food[0])
+    .catch((error) => {
+      const err = new Error(error);
+      return err;
+    });
+
+  if (merchantFood instanceof Error) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  const prefixLink = 'https://storage.googleapis.com/';
+  const food = singleFood();
+  food.name = merchantFood.name;
+  food.category = merchantFood.FoodCategoryId;
+  food.price = merchantFood.price;
+  food.mam_rates = merchantFood.rating;
+  food.image = merchantFood.image !== null
+    ? `${prefixLink}${process.env.BUCKET_NAME}/${merchantFood.image}`
+    : `${prefixLink}${process.env.BUCKET_NAME}/thumbnails/default.jpg`;
+  food.mam_image = `${prefixLink}${process.env.BUCKET_NAME}/${merchantFood.last_photo}`;
+
+  response = Response.defaultOK('success get food', { food });
+  return res.status(response.code).json(response);
+};
+
+export {
+  addNewFoodHandler,
+  getAllFoodsHandler,
+  getSingleFoodHandler,
+};
