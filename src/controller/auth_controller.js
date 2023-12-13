@@ -1,9 +1,19 @@
-import { sellerRegisterValidator } from '../validators/index.js';
-import { registerAccount } from '../pkg/firebase.js';
-import { Account, Merchant } from '../models/index.js';
-import parseAddress from '../pkg/geocode.js';
-import Response from '../dto/responses/default_response.js';
-import sequelize from '../pkg/orm.js';
+import {
+  sellerRegisterValidator,
+  loginValidator,
+} from '../validators/index.js';
+import {
+  Account,
+  Merchant,
+} from '../models/index.js';
+import {
+  sequelize,
+  parseAddress,
+  registerAccount,
+  loginAccount,
+} from '../pkg/index.js';
+import { createToken } from '../middlewares/index.js';
+import Response from '../dto/responses/index.js';
 
 const sellerRegisterHandler = async (req, res) => {
   let response;
@@ -49,4 +59,29 @@ const sellerRegisterHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
-export default sellerRegisterHandler;
+const loginHandler = async (req, res) => {
+  const reqBody = req.body;
+  let response;
+
+  const reqError = loginValidator(reqBody);
+  if (reqError.length !== 0) {
+    response = Response.defaultBadRequest({ errors: reqError });
+    return res.status(response.code).json(response);
+  }
+
+  const loginStatus = await loginAccount(reqBody.email, reqBody.password);
+  console.log(loginStatus);
+  if (!loginStatus.verified || loginStatus.error != null) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  const account = await Account.findByPk(loginStatus.uid);
+  const jwt = createToken({ role: account.RoleId, id: loginStatus.uid });
+
+  res.setHeader('Authorization', jwt);
+  response = Response.defaultOK('login success', null);
+  return res.status(response.code).json(response);
+};
+
+export { sellerRegisterHandler, loginHandler };
