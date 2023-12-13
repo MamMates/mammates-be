@@ -4,6 +4,7 @@ import Response from '../dto/responses/index.js';
 import createFilename from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
 import sequelize from '../pkg/orm.js';
+import allFoods from '../dto/requests/index.js';
 
 const addNewFoodHandler = async (req, res) => {
   let response;
@@ -55,6 +56,52 @@ const addNewFoodHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
-const holder = null;
+const getAllFoodsHandler = async (req, res) => {
+  let response;
+  const { decodedToken } = res.locals;
 
-export { addNewFoodHandler, holder };
+  const merchantFoods = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    include: {
+      model: Food,
+      attributes: ['id', 'name', 'price', 'rating', 'image', 'last_photo', 'updatedAt'],
+    },
+  })
+    .then((merchant) => {
+      const foods = merchant.Food;
+      return foods;
+    })
+    .catch((error) => {
+      const err = new Error(error);
+      return err;
+    });
+
+  if (merchantFoods instanceof Error) {
+    response = Response.defaultInternalError({ error: merchantFoods });
+    return res.status(response.code).json(response);
+  }
+
+  const foods = merchantFoods.map((food) => {
+    const foodDto = allFoods();
+    const prefixLink = 'https://storage.googleapis.com/';
+    const now = new Date();
+    const lastUpdateDate = new Date(food.updatedAt);
+    foodDto.id = food.id;
+    foodDto.name = food.name;
+    foodDto.price = food.price;
+    foodDto.mam_rates = food.rating;
+    foodDto.image = food.image !== null
+      ? `${prefixLink}${process.env.BUCKET_NAME}/${food.image}`
+      : `${prefixLink}${process.env.BUCKET_NAME}/${food.last_photo}`;
+    foodDto.is_valid = (now - lastUpdateDate) / 3_600_000 <= process.env.VALID_FOOD_DURATION;
+
+    return foodDto;
+  });
+
+  response = Response.defaultOK('success get foods', { foods });
+  return res.status(response.code).json(response);
+};
+
+export { addNewFoodHandler, getAllFoodsHandler };
