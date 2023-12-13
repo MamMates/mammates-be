@@ -21,7 +21,7 @@ class Response {
 
   static defaultBadRequest(data) {
     const res = {
-      status: true,
+      status: false,
       code: 400,
       message: 'Request body or parameters not match',
       data,
@@ -31,7 +31,7 @@ class Response {
 
   static defaultUnauthorized(data) {
     const res = {
-      status: true,
+      status: false,
       code: 401,
       message: 'Unauthorized access',
       data,
@@ -41,7 +41,7 @@ class Response {
 
   static defaultForbidden(data) {
     const res = {
-      status: true,
+      status: false,
       code: 402,
       message: 'Forbidden access',
       data,
@@ -51,7 +51,7 @@ class Response {
 
   static defaultNotFound(data) {
     const res = {
-      status: true,
+      status: false,
       code: 404,
       message: 'Record not found',
       data,
@@ -61,7 +61,7 @@ class Response {
 
   static defaultConflict(data) {
     const res = {
-      status: true,
+      status: false,
       code: 409,
       message: 'New data already exists',
       data,
@@ -71,7 +71,7 @@ class Response {
 
   static defaultInternalError(data) {
     const res = {
-      status: true,
+      status: false,
       code: 500,
       message: 'Request failed, server error',
       data,

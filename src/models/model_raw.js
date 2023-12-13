@@ -41,7 +41,11 @@ const merchant = {
       allowNull: false,
       autoIncrement: true,
     },
-    name: {
+    store: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    seller: {
       type: DataTypes.STRING,
       allowNull: false,
     },
