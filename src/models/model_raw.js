@@ -26,6 +26,10 @@ const account = {
       allowNull: false,
       primaryKey: true,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   options: {
     tableName: 'accounts',
