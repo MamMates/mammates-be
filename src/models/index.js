@@ -8,6 +8,7 @@ import {
   OrderDetail,
   OrderStatus,
   Transaction,
+  Report,
 } from './model_relations.js';
 import initialMigrate from './migrate.js';
 import createMaster from './create_master.js';
@@ -22,6 +23,7 @@ export {
   OrderDetail,
   OrderStatus,
   Transaction,
+  Report,
   initialMigrate,
   createMaster,
 };

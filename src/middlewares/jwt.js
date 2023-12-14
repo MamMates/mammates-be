@@ -14,7 +14,9 @@ const verifyToken = (requiredRole) => {
     let response;
 
     let decodedToken;
-    const token = req.get('Authorization');
+    let token = req.get('Authorization').split(' ');
+    token = token[token.length - 1];
+
     try {
       decodedToken = jwt.verify(token, secret);
     } catch (error) {
@@ -29,6 +31,7 @@ const verifyToken = (requiredRole) => {
       response = Response.defaultForbidden({ error: 'forbidden access' });
       return res.status(response.code).json(response);
     }
+    res.locals.decodedToken = decodedToken;
 
     return next();
   };
