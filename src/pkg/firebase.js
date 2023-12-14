@@ -72,14 +72,4 @@ const loginAccount = async (email, passowrd) => {
   return loginStatus;
 };
 
-const getUserDetail = (userId) => {
-  const auth = getAuth(app);
-  auth.getUser(userId)
-    .then((userRecord) => {
-      console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-    });
-};
-
-getUserDetail('wHWkm9o8ChQi00vAvM4BwnMealy2');
-
 export { registerAccount, loginAccount };

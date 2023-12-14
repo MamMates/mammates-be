@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import { fileUploadError, verifyToken } from '../middlewares/index.js';
 import { getStoreDetailHandler } from '../controller/index.js';
-import { Merchant } from '../models/model_definitions.js';
+import { Account, Merchant } from '../models/model_definitions.js';
 import { sellerAccount, storeDetail } from '../dto/requests/seller_account_dto.js';
 import Response from '../dto/responses/default_response.js';
 
@@ -37,6 +37,7 @@ sellerAccountRouter.get('/seller', verifyToken(1), async (req, res) => {
     where: {
       AccountId: decodedToken.id,
     },
+    include: Account,
   });
   if (!merchant) {
     response = Response.defaultNotFound(null);
@@ -48,10 +49,10 @@ sellerAccountRouter.get('/seller', verifyToken(1), async (req, res) => {
   account.store = merchant.store;
   account.address = `${merchant.line}, ${merchant.subdistrict}, ${merchant.city}, ${merchant.province}`;
   account.seller = merchant.seller;
-  account.email = merchant.email;
+  account.email = merchant.Account.email;
   account.image = merchant.image !== null ? `${prefixLink}${process.env.BUCKET_NAME}/${merchant.image}` : null;
-  console.log(account);
-  response = Response.defaultOK('success get seller detail', { account });
+
+  response = Response.defaultOK('success get seller account', { account });
   return res.status(response.code).json(response);
 });
 
