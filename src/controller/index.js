@@ -2,7 +2,12 @@ import {
   sellerRegisterHandler,
   loginHandler,
 } from './auth_controller.js';
-import { addNewFoodHandler, getAllFoodsHandler, getSingleFoodHandler } from './food_controller.js';
+import {
+  addNewFoodHandler,
+  getAllFoodsHandler,
+  getSingleFoodHandler,
+  updateSingleFoodHandler,
+} from './food_controller.js';
 
 export {
   sellerRegisterHandler,
@@ -10,4 +15,5 @@ export {
   addNewFoodHandler,
   getAllFoodsHandler,
   getSingleFoodHandler,
+  updateSingleFoodHandler,
 };

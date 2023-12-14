@@ -149,8 +149,77 @@ const getSingleFoodHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
+const updateSingleFoodHandler = async (req, res) => {
+  let response;
+  const { foodId } = req.params;
+  const { decodedToken } = res.locals;
+  const reqBody = req.body;
+  const reqFiles = req.files;
+
+  const reqError = foodValidator(reqBody);
+  if (reqError.length !== 0) {
+    response = Response.defaultBadRequest({ errors: reqError });
+    return res.status(response.code).json(response);
+  }
+
+  if (foodId <= 0) {
+    response = Response.defaultBadRequest({ error: 'request params error' });
+    return res.status(response.code).json(response);
+  }
+
+  const currentFood = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    include: {
+      model: Food,
+      where: {
+        id: foodId,
+      },
+    },
+  })
+    .then((merchant) => merchant.Food[0])
+    .catch((error) => {
+      const err = new Error(error);
+      return err;
+    });
+
+  if (currentFood instanceof Error) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  currentFood.name = reqBody.name;
+  currentFood.FoodCategoryId = reqBody.category;
+  currentFood.price = reqBody.price;
+  currentFood.rating = reqBody.mam_rates;
+  let thumbnailName = null;
+  if (currentFood.image === null && reqFiles.image && typeof reqFiles.image === 'object') {
+    thumbnailName = createFilename('thumbnails/', reqFiles.image[0].originalname);
+    currentFood.image = thumbnailName;
+  }
+  await currentFood.save();
+
+  await uploadFileToBucket(
+    process.env.BUCKET_NAME,
+    currentFood.last_photo,
+    reqFiles.mam_image[0].buffer,
+  );
+  if (reqFiles.image && typeof reqFiles.image === 'object') {
+    await uploadFileToBucket(
+      process.env.BUCKET_NAME,
+      currentFood.image,
+      reqFiles.image[0].buffer,
+    );
+  }
+
+  response = Response.defaultOK('food updated successfully', null);
+  return res.status(response.code).json(response);
+};
+
 export {
   addNewFoodHandler,
   getAllFoodsHandler,
   getSingleFoodHandler,
+  updateSingleFoodHandler,
 };
