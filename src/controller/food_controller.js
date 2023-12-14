@@ -217,9 +217,46 @@ const updateSingleFoodHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
+const deleteSingleFood = async (req, res) => {
+  let response;
+  const { foodId } = req.params;
+  const { decodedToken } = res.locals;
+
+  const count = await Merchant.count({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    include: {
+      model: Food,
+      where: {
+        id: foodId,
+      },
+    },
+  });
+
+  if (count !== 1) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  await Food.destroy({
+    where: {
+      id: foodId,
+    },
+  })
+    .catch((error) => {
+      response = Response.defaultInternalError({ error });
+      return res.status(response.code).json(response);
+    });
+
+  response = Response.defaultOK('food deleted successfully', null);
+  return res.status(response.code).json(response);
+};
+
 export {
   addNewFoodHandler,
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
+  deleteSingleFood,
 };

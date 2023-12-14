@@ -3,6 +3,7 @@ import multer from 'multer';
 import { fileUploadError, verifyToken } from '../middlewares/index.js';
 import {
   addNewFoodHandler,
+  deleteSingleFood,
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
@@ -38,6 +39,7 @@ foodRouter.post('/', verifyToken(1), foodUpload, addNewFoodHandler);
 foodRouter.get('/', verifyToken(1), getAllFoodsHandler);
 foodRouter.get('/:foodId', verifyToken(1), getSingleFoodHandler);
 foodRouter.put('/:foodId', verifyToken(1), foodUpload, updateSingleFoodHandler);
+foodRouter.delete('/:foodId', verifyToken(1), deleteSingleFood);
 
 foodRouter.use(fileUploadError);
 

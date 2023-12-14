@@ -7,6 +7,7 @@ import {
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
+  deleteSingleFood,
 } from './food_controller.js';
 
 export {
@@ -16,4 +17,5 @@ export {
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
+  deleteSingleFood,
 };
