@@ -8,6 +8,7 @@ import {
   OrderDetail,
   OrderStatus,
   Transaction,
+  Report,
 } from './model_definitions.js';
 
 Role.hasMany(Account);
@@ -78,4 +79,5 @@ export {
   OrderDetail,
   OrderStatus,
   Transaction,
+  Report,
 };

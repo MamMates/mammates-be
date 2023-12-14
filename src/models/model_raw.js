@@ -95,6 +95,7 @@ const food = {
   },
   options: {
     tableName: 'foods',
+    paranoid: true,
   },
 };
 
@@ -201,6 +202,33 @@ const transaction = {
   },
 };
 
+const report = {
+  name: 'Report',
+  attributes: {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rating: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+    },
+  },
+  options: {
+    tableName: 'reports',
+  },
+};
+
 export {
   role,
   account,
@@ -211,4 +239,5 @@ export {
   orderStatus,
   orderDetail,
   transaction,
+  report,
 };
