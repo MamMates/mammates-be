@@ -142,7 +142,7 @@ const getSingleFoodHandler = async (req, res) => {
   food.mam_rates = merchantFood.rating;
   food.image = merchantFood.image !== null
     ? `${prefixLink}${process.env.BUCKET_NAME}/${merchantFood.image}`
-    : `${prefixLink}${process.env.BUCKET_NAME}/thumbnails/default.jpg`;
+    : null;
   food.mam_image = `${prefixLink}${process.env.BUCKET_NAME}/${merchantFood.last_photo}`;
 
   response = Response.defaultOK('success get food', { food });
