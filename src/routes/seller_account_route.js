@@ -1,10 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { fileUploadError, verifyToken } from '../middlewares/index.js';
-import { getStoreDetailHandler } from '../controller/index.js';
-import { Account, Merchant } from '../models/model_definitions.js';
-import { sellerAccount, storeDetail } from '../dto/requests/seller_account_dto.js';
-import Response from '../dto/responses/default_response.js';
+import { getStoreDetailHandler, getSellerAccountHandler } from '../controller/index.js';
 
 const upload = multer({
   limits: {
@@ -29,32 +26,7 @@ const profileUpload = upload.single('image');
 const sellerAccountRouter = express.Router();
 
 sellerAccountRouter.get('/store', verifyToken(1), getStoreDetailHandler);
-sellerAccountRouter.get('/seller', verifyToken(1), async (req, res) => {
-  let response;
-  const { decodedToken } = res.locals;
-
-  const merchant = await Merchant.findOne({
-    where: {
-      AccountId: decodedToken.id,
-    },
-    include: Account,
-  });
-  if (!merchant) {
-    response = Response.defaultNotFound(null);
-    return res.status(response.code).json(response);
-  }
-
-  const prefixLink = 'https://storage.googleapis.com/';
-  const account = sellerAccount();
-  account.store = merchant.store;
-  account.address = `${merchant.line}, ${merchant.subdistrict}, ${merchant.city}, ${merchant.province}`;
-  account.seller = merchant.seller;
-  account.email = merchant.Account.email;
-  account.image = merchant.image !== null ? `${prefixLink}${process.env.BUCKET_NAME}/${merchant.image}` : null;
-
-  response = Response.defaultOK('success get seller account', { account });
-  return res.status(response.code).json(response);
-});
+sellerAccountRouter.get('/seller', verifyToken(1), getSellerAccountHandler);
 
 sellerAccountRouter.use(fileUploadError);
 
