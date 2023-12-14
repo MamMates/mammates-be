@@ -38,7 +38,11 @@ const sellerRegisterHandler = async (req, res) => {
   }
 
   const accountTransaction = async (t) => {
-    await Account.create({ id: registerStatus.uid, RoleId: 1 }, { transaction: t });
+    await Account.create({
+      id: registerStatus.uid,
+      email: reqBody.email,
+      RoleId: 1,
+    }, { transaction: t });
     await Merchant.create({
       store: reqBody.store,
       seller: reqBody.seller,
@@ -70,7 +74,7 @@ const loginHandler = async (req, res) => {
   }
 
   const loginStatus = await loginAccount(reqBody.email, reqBody.password);
-  console.log(loginStatus);
+
   if (!loginStatus.verified || loginStatus.error != null) {
     response = Response.defaultNotFound(null);
     return res.status(response.code).json(response);
