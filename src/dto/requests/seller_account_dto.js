@@ -8,7 +8,7 @@ const storeDetail = () => {
   return data;
 };
 
-const sellerDetail = () => {
+const sellerAccount = () => {
   const data = {
     store: '',
     address: '',
@@ -20,4 +20,4 @@ const sellerDetail = () => {
   return data;
 };
 
-export { storeDetail, sellerDetail };
+export { storeDetail, sellerAccount };
