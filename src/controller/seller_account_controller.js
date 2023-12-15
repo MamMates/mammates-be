@@ -3,6 +3,8 @@ import Response from '../dto/responses/index.js';
 import { storeDetail, sellerAccount } from '../dto/requests/index.js';
 import { sellerUpdateValidator } from '../validators/index.js';
 import { parseAddress, sequelize } from '../pkg/index.js';
+import createFilename from '../utils/filename.js';
+import uploadFileToBucket from '../pkg/storage.js';
 
 const getStoreDetailHandler = async (req, res) => {
   let response;
@@ -110,8 +112,46 @@ const updateSellerDetailHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
+const updateSellerProfilePictureHandler = async (req, res) => {
+  let response;
+  const { decodedToken } = res.locals;
+  const reqFile = req.file;
+
+  if (!reqFile) {
+    response = Response.defaultBadRequest({ error: 'make sure image included' });
+    return res.status(response.code).json(response);
+  }
+
+  const merchant = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+  })
+    .catch((error) => {
+      const err = new Error(error);
+      return err;
+    });
+
+  if (merchant instanceof Error) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  let profileName = merchant.image;
+  if (profileName === null) {
+    profileName = createFilename('profiles/', reqFile.originalname);
+  }
+
+  await merchant.update({ image: profileName });
+  await uploadFileToBucket(process.env.BUCKET_NAME, profileName, reqFile.buffer);
+
+  response = Response.defaultOK('profile picture updated successfully', null);
+  return res.status(response.code).json(response);
+};
+
 export {
   getStoreDetailHandler,
   getSellerAccountHandler,
   updateSellerDetailHandler,
+  updateSellerProfilePictureHandler,
 };

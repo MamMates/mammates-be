@@ -13,6 +13,7 @@ import {
   getStoreDetailHandler,
   getSellerAccountHandler,
   updateSellerDetailHandler,
+  updateSellerProfilePictureHandler,
 } from './seller_account_controller.js';
 
 export {
@@ -26,4 +27,5 @@ export {
   getStoreDetailHandler,
   getSellerAccountHandler,
   updateSellerDetailHandler,
+  updateSellerProfilePictureHandler,
 };
