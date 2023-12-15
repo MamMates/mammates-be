@@ -9,6 +9,12 @@ import {
   updateSingleFoodHandler,
   deleteSingleFood,
 } from './food_controller.js';
+import {
+  getStoreDetailHandler,
+  getSellerAccountHandler,
+  updateSellerDetailHandler,
+  updateSellerProfilePictureHandler,
+} from './seller_account_controller.js';
 
 export {
   sellerRegisterHandler,
@@ -18,4 +24,8 @@ export {
   getSingleFoodHandler,
   updateSingleFoodHandler,
   deleteSingleFood,
+  getStoreDetailHandler,
+  getSellerAccountHandler,
+  updateSellerDetailHandler,
+  updateSellerProfilePictureHandler,
 };

@@ -30,19 +30,19 @@ const parseAddress = async (address) => {
           || componen.types.includes('route')
           || componen.types.includes('locality')
           || componen.types.includes('administrative_area_level_4')) {
-          parsedAddress.line += parsedAddress.line === '' ? componen.short_name : `, ${componen.short_name}`;
+          parsedAddress.line += parsedAddress.line === '' ? componen.long_name : `, ${componen.long_name}`;
         }
 
         if (componen.types.includes('administrative_area_level_3')) {
-          parsedAddress.subdistrict = componen.short_name;
+          parsedAddress.subdistrict = componen.long_name;
         }
 
         if (componen.types.includes('administrative_area_level_2')) {
-          parsedAddress.city = componen.short_name;
+          parsedAddress.city = componen.long_name;
         }
 
         if (componen.types.includes('administrative_area_level_1')) {
-          parsedAddress.province = componen.short_name;
+          parsedAddress.province = componen.long_name;
         }
       });
 
