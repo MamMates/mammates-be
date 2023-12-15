@@ -30,6 +30,10 @@ const account = {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   options: {
     tableName: 'accounts',

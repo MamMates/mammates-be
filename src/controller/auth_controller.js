@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import {
   sellerRegisterValidator,
   loginValidator,
@@ -9,11 +10,10 @@ import {
 import {
   sequelize,
   parseAddress,
-  registerAccount,
-  loginAccount,
 } from '../pkg/index.js';
 import { createToken } from '../middlewares/index.js';
 import Response from '../dto/responses/index.js';
+import { checkBcrypt, createBcrypt } from '../utils/index.js';
 
 const sellerRegisterHandler = async (req, res) => {
   let response;
@@ -31,16 +31,14 @@ const sellerRegisterHandler = async (req, res) => {
     return res.status(response.code).json(response);
   }
 
-  const registerStatus = await registerAccount(reqBody.email, reqBody.password);
-  if (registerStatus.error != null) {
-    response = Response.defaultConflict({ error: registerStatus.error });
-    return res.status(response.code).json(response);
-  }
+  const userId = uuidv4();
+  const password = await createBcrypt(reqBody.password);
 
   const accountTransaction = async (t) => {
     await Account.create({
-      id: registerStatus.uid,
+      id: userId,
       email: reqBody.email,
+      password,
       RoleId: 1,
     }, { transaction: t });
     await Merchant.create({
@@ -50,12 +48,12 @@ const sellerRegisterHandler = async (req, res) => {
       subdistrict: parsedAdress.subdistrict,
       city: parsedAdress.city,
       province: parsedAdress.province,
-      AccountId: registerStatus.uid,
+      AccountId: userId,
     }, { transaction: t });
   };
   await sequelize.transaction(accountTransaction)
     .catch((error) => {
-      response = Response.defaultInternalError({ error });
+      response = Response.defaultConflict({ error });
       return res.status(response.code).json(response);
     });
 
@@ -73,15 +71,23 @@ const loginHandler = async (req, res) => {
     return res.status(response.code).json(response);
   }
 
-  const loginStatus = await loginAccount(reqBody.email, reqBody.password);
+  const account = await Account.findOne({
+    where: {
+      email: reqBody.email,
+    },
+  })
+    .catch(() => {
+      response = Response.defaultNotFound(null);
+      return res.status(response.code).json(response);
+    });
 
-  if (!loginStatus.verified || loginStatus.error != null) {
+  const verifiedPass = await checkBcrypt(account.password, reqBody.password);
+  if (!verifiedPass) {
     response = Response.defaultNotFound(null);
     return res.status(response.code).json(response);
   }
 
-  const account = await Account.findByPk(loginStatus.uid);
-  const jwt = createToken({ role: account.RoleId, id: loginStatus.uid });
+  const jwt = createToken({ role: account.RoleId, id: account.id });
 
   res.setHeader('Authorization', jwt);
   response = Response.defaultOK('login success', null);

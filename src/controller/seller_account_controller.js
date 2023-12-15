@@ -3,7 +3,7 @@ import Response from '../dto/responses/index.js';
 import { storeDetail, sellerAccount } from '../dto/requests/index.js';
 import { sellerUpdateValidator } from '../validators/index.js';
 import { parseAddress, sequelize } from '../pkg/index.js';
-import createFilename from '../utils/filename.js';
+import { createFilename } from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
 
 const getStoreDetailHandler = async (req, res) => {
