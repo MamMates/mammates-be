@@ -6,7 +6,6 @@ const initialMigrate = async () => {
   try {
     await sequelize.sync({ force: false });
     await createMaster();
-    sequelize.close();
   } catch (error) {
     return error;
   }
