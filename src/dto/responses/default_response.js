@@ -42,7 +42,7 @@ class Response {
   static defaultForbidden(data) {
     const res = {
       status: false,
-      code: 402,
+      code: 403,
       message: 'Forbidden access',
       data,
     };

@@ -27,7 +27,7 @@ const verifyToken = (requiredRole) => {
     const account = await Account.findByPk(decodedToken.id);
 
     // 3 means both seller and buyer can access
-    if ((decodedToken.role !== requiredRole && decodedToken.rule !== 3) || account === null) {
+    if ((decodedToken.role !== requiredRole && requiredRole !== 3) || account === null) {
       response = Response.defaultForbidden({ error: 'forbidden access' });
       return res.status(response.code).json(response);
     }

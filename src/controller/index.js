@@ -15,6 +15,7 @@ import {
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
 } from './seller_account_controller.js';
+import updatePasswordHandler from './password_controller.js';
 
 export {
   sellerRegisterHandler,
@@ -28,4 +29,5 @@ export {
   getSellerAccountHandler,
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
+  updatePasswordHandler,
 };
