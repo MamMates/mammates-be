@@ -1,7 +1,7 @@
 import { foodValidator } from '../validators/index.js';
 import { Food, Merchant } from '../models/index.js';
 import Response from '../dto/responses/index.js';
-import createFilename from '../utils/index.js';
+import { createFilename } from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
 import sequelize from '../pkg/orm.js';
 import { allFoods, singleFood } from '../dto/requests/index.js';

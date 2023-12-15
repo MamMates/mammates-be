@@ -10,7 +10,6 @@ Backend service of seller and buyer app of MamMates.
 - Express (web server)
 - Sequelize (ORM)
 - JWT (access token)
-- Firebase (account management)
 - Joi (request body validation)
 - ESLint for linting
 
