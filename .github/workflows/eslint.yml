@@ -1,0 +1,22 @@
+name: Lint and Deploy
+
+on:
+  push:
+    branches: [ "dev-lint" ]
+  pull_request:
+    branches: [ "dev-lint" ]
+
+jobs:
+  eslint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install ESLint
+      run: npm install eslint
+
+    - name: Run ESLint
+      run: npm run lint
