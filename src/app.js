@@ -1,4 +1,4 @@
 import 'dotenv/config';
-import startServer from './pkg/index.js';
+import startServer from "./pkg/index.js";
 
 startServer();
