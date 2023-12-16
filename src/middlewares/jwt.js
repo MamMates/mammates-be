@@ -14,7 +14,12 @@ const verifyToken = (requiredRole) => {
     let response;
 
     let decodedToken;
-    let token = req.get('Authorization').split(' ');
+    let token = req.get('Authorization');
+    if (!token) {
+      response = Response.defaultUnauthorized({ error: 'token not provided' });
+      return res.status(response.code).json(response);
+    }
+    token = token.split(' ');
     token = token[token.length - 1];
 
     try {
