@@ -1,5 +1,6 @@
 import {
   sellerRegisterHandler,
+  buyerRegisterHandler,
   loginHandler,
 } from './auth_controller.js';
 import {
@@ -21,6 +22,7 @@ import mammatesHandler from './mammates_controller.js';
 
 export {
   sellerRegisterHandler,
+  buyerRegisterHandler,
   loginHandler,
   addNewFoodHandler,
   getAllFoodsHandler,
