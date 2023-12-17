@@ -10,6 +10,7 @@ import {
   orderDetail,
   transaction,
   report,
+  customer,
 } from './model_raw.js';
 
 const Account = sequelize.define(
@@ -64,6 +65,12 @@ const Report = sequelize.define(
   report.options,
 );
 
+const Customer = sequelize.define(
+  customer.name,
+  customer.attributes,
+  customer.options,
+);
+
 export {
   Account,
   Role,
@@ -75,4 +82,5 @@ export {
   OrderStatus,
   Transaction,
   Report,
+  Customer,
 };

@@ -9,9 +9,9 @@ import {
   OrderStatus,
   Transaction,
   Report,
+  Customer,
 } from './model_relations.js';
 import initialMigrate from './migrate.js';
-import createMaster from './create_master.js';
 
 export {
   Account,
@@ -24,6 +24,6 @@ export {
   OrderStatus,
   Transaction,
   Report,
+  Customer,
   initialMigrate,
-  createMaster,
 };

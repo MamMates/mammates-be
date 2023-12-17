@@ -210,6 +210,25 @@ const transaction = {
   },
 };
 
+const customer = {
+  name: 'Customer',
+  attributes: {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  options: {
+    tableName: 'customers',
+  },
+};
+
 const report = {
   name: 'Report',
   attributes: {
@@ -252,4 +271,5 @@ export {
   orderDetail,
   transaction,
   report,
+  customer,
 };

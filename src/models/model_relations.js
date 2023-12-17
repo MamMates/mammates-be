@@ -9,6 +9,7 @@ import {
   OrderStatus,
   Transaction,
   Report,
+  Customer,
 } from './model_definitions.js';
 
 Role.hasMany(Account);
@@ -19,6 +20,12 @@ Account.belongsTo(Role, {
 
 Account.hasOne(Merchant);
 Merchant.belongsTo(Account, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+
+Account.hasOne(Customer);
+Customer.belongsTo(Account, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
@@ -37,6 +44,12 @@ Food.belongsTo(FoodCategory, {
 
 Merchant.hasMany(Order);
 Order.belongsTo(Merchant, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+
+Customer.hasMany(Order);
+Order.belongsTo(Customer, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
@@ -80,4 +93,5 @@ export {
   OrderStatus,
   Transaction,
   Report,
+  Customer,
 };
