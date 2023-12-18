@@ -9,6 +9,7 @@ import {
   getSingleFoodHandler,
   updateSingleFoodHandler,
   deleteSingleFood,
+  findFoodsHandler,
 } from './food_controller.js';
 import {
   getStoreDetailHandler,
@@ -36,4 +37,5 @@ export {
   updatePasswordHandler,
   createReportHandler,
   mammatesHandler,
+  findFoodsHandler,
 };
