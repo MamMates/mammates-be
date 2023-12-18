@@ -258,16 +258,13 @@ const findFoodsHandler = async (req, res) => {
   let response;
   const reqQuery = req.query;
 
-  if (!reqQuery.q) {
+  if (!reqQuery.q && !reqQuery.c && !reqQuery.s) {
     response = Response.defaultBadRequest({ error: 'Query must be provided' });
     return res.status(response.code).json(response);
   }
 
-  const foodCondition = {
-    name: {
-      [Op.substring]: reqQuery.q,
-    },
-  };
+  const foodCondition = {};
+  if (reqQuery.q) foodCondition.name = { [Op.substring]: reqQuery.q };
   if (reqQuery.c) foodCondition.FoodCategoryId = reqQuery.c;
   if (reqQuery.s) foodCondition.MerchantId = reqQuery.s;
 
