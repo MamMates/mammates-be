@@ -11,6 +11,24 @@ const allFoods = () => {
   return data;
 };
 
+const findFoods = () => {
+  const seller = {
+    id: 0,
+    name: '',
+    address: '',
+  };
+  const food = {
+    id: 0,
+    name: 0,
+    price: 0,
+    mam_rates: 0,
+    image: '',
+    seller,
+  };
+
+  return food;
+};
+
 const singleFood = () => {
   const data = {
     name: '',
@@ -24,4 +42,4 @@ const singleFood = () => {
   return data;
 };
 
-export { allFoods, singleFood };
+export { allFoods, findFoods, singleFood };
