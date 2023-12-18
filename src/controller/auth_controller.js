@@ -53,11 +53,12 @@ const sellerRegisterHandler = async (req, res) => {
       AccountId: userId,
     }, { transaction: t });
   };
-  await sequelize.transaction(accountTransaction)
-    .catch((error) => {
-      response = Response.defaultConflict({ error });
-      return res.status(response.code).json(response);
-    });
+  const result = await sequelize.transaction(accountTransaction)
+    .catch((error) => error);
+  if (result instanceof Error) {
+    response = Response.defaultConflict({ error: result.errors[0].message });
+    return res.status(response.code).json(response);
+  }
 
   response = Response.defaultCreated('register success', null);
   return res.status(response.code).json(response);
@@ -88,11 +89,12 @@ const buyerRegisterHandler = async (req, res) => {
       AccountId: userId,
     }, { transaction: t });
   };
-  await sequelize.transaction(accountTransaction)
-    .catch((error) => {
-      response = Response.defaultConflict({ error });
-      return res.status(response.code).json(response);
-    });
+  const result = await sequelize.transaction(accountTransaction)
+    .catch((error) => error);
+  if (result instanceof Error) {
+    response = Response.defaultConflict({ error: result.errors[0].message });
+    return res.status(response.code).json(response);
+  }
 
   response = Response.defaultCreated('register success', null);
   return res.status(response.code).json(response);
