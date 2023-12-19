@@ -1,5 +1,5 @@
 import { allFoods, findFoods, singleFood } from './food_dto.js';
-import { storeDetail, sellerAccount } from './account_dto.js';
+import { storeDetail, sellerAccount, buyerAccount } from './account_dto.js';
 import { createOrderDetail, ordersDetail } from './order_dto.js';
 
 export {
@@ -10,4 +10,5 @@ export {
   sellerAccount,
   createOrderDetail,
   ordersDetail,
+  buyerAccount,
 };

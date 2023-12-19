@@ -17,6 +17,7 @@ import {
   getSellerAccountHandler,
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
+  getBuyerAccountHandler,
 } from './account_controller.js';
 import updatePasswordHandler from './password_controller.js';
 import createReportHandler from './report_controller.js';
@@ -43,4 +44,5 @@ export {
   crateBuyerOrderHandler,
   getBuyerOrdersHandler,
   getFoodRecommendationHandler,
+  getBuyerAccountHandler,
 };

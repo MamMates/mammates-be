@@ -6,6 +6,7 @@ import {
   getSellerAccountHandler,
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
+  getBuyerAccountHandler,
 } from '../controller/index.js';
 
 const upload = multer({
@@ -35,9 +36,7 @@ accountRouter.get('/seller', verifyToken(1), getSellerAccountHandler);
 accountRouter.put('/seller', verifyToken(1), updateSellerDetailHandler);
 accountRouter.patch('/seller', verifyToken(1), profileUpload, updateSellerProfilePictureHandler);
 
-accountRouter.get('/buyer', verifyToken(2), async (req, res) => {
-
-});
+accountRouter.get('/buyer', verifyToken(2), getBuyerAccountHandler);
 
 accountRouter.use(fileUploadError);
 
