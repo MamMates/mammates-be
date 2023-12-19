@@ -20,4 +20,14 @@ const sellerAccount = () => {
   return data;
 };
 
-export { storeDetail, sellerAccount };
+const buyerAccount = () => {
+  const data = {
+    name: '',
+    email: '',
+    image: '',
+  };
+
+  return data;
+};
+
+export { storeDetail, sellerAccount, buyerAccount };
