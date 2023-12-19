@@ -1,7 +1,7 @@
 import { Account, Merchant, Customer } from '../models/index.js';
 import Response from '../dto/responses/index.js';
 import { storeDetail, sellerAccount, buyerAccount } from '../dto/requests/index.js';
-import { sellerUpdateValidator } from '../validators/index.js';
+import { sellerUpdateValidator, buyerUpdateValidator } from '../validators/index.js';
 import { parseAddress, sequelize } from '../pkg/index.js';
 import { createFilename } from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
@@ -175,10 +175,56 @@ const getBuyerAccountHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
+const updateBuyerAccountHandler = async (req, res) => {
+  let response;
+  const { decodedToken } = res.locals;
+  const reqBody = req.body;
+
+  const reqError = buyerUpdateValidator(reqBody);
+  if (reqError.length !== 0) {
+    response = Response.defaultBadRequest({ errors: reqError });
+    return res.status(response.code).json(response);
+  }
+
+  const customer = await Customer.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    include: Account,
+  })
+    .catch((error) => {
+      const err = new Error(error);
+      return err;
+    });
+
+  if (customer instanceof Error) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  const account = customer.Account;
+  customer.name = reqBody.name;
+  account.email = reqBody.email;
+
+  const updateTransaction = async (t) => {
+    await customer.save({ transaction: t });
+    await account.save({ trancaction: t });
+  };
+  await sequelize.transaction(updateTransaction)
+    .catch((error) => {
+      response = Response.defaultInternalError({ error });
+      return res.status(response.code).json(response);
+    });
+
+  response = Response.defaultOK('buyer updated successfully');
+  return res.status(response.code).json(response);
+};
+
 export {
   getStoreDetailHandler,
   getSellerAccountHandler,
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
   getBuyerAccountHandler,
+  updateBuyerAccountHandler,
 };

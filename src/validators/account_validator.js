@@ -21,4 +21,18 @@ const sellerUpdateValidator = (body) => {
   return getErrorList(error);
 };
 
-export default sellerUpdateValidator;
+const buyerUpdateValidator = (body) => {
+  const buyerUpdate = Joi.object({
+    name: Joi.string()
+      .min(1)
+      .required(),
+    email: Joi.string()
+      .email()
+      .required(),
+  });
+
+  const error = buyerUpdate.validate(body, { abortEarly: false });
+  return getErrorList(error);
+};
+
+export { sellerUpdateValidator, buyerUpdateValidator };
