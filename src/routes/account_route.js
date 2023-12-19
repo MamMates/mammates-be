@@ -28,13 +28,17 @@ const upload = multer({
 });
 
 const profileUpload = upload.single('image');
-const sellerAccountRouter = express.Router();
+const accountRouter = express.Router();
 
-sellerAccountRouter.get('/store', verifyToken(1), getStoreDetailHandler);
-sellerAccountRouter.get('/seller', verifyToken(1), getSellerAccountHandler);
-sellerAccountRouter.put('/seller', verifyToken(1), updateSellerDetailHandler);
-sellerAccountRouter.patch('/seller', verifyToken(1), profileUpload, updateSellerProfilePictureHandler);
+accountRouter.get('/store', verifyToken(1), getStoreDetailHandler);
+accountRouter.get('/seller', verifyToken(1), getSellerAccountHandler);
+accountRouter.put('/seller', verifyToken(1), updateSellerDetailHandler);
+accountRouter.patch('/seller', verifyToken(1), profileUpload, updateSellerProfilePictureHandler);
 
-sellerAccountRouter.use(fileUploadError);
+accountRouter.get('/buyer', verifyToken(2), async (req, res) => {
 
-export default sellerAccountRouter;
+});
+
+accountRouter.use(fileUploadError);
+
+export default accountRouter;
