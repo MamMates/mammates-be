@@ -140,10 +140,6 @@ const order = {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    order_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
   },
   options: {
     tableName: 'orders',
@@ -201,10 +197,6 @@ const transaction = {
       autoIncrement: true,
     },
     tax: DataTypes.FLOAT,
-    transaction_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
   },
   options: {
     tableName: 'transactions',
