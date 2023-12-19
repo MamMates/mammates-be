@@ -19,6 +19,7 @@ import {
   updateSellerProfilePictureHandler,
   getBuyerAccountHandler,
   updateBuyerAccountHandler,
+  updateBuyerProfilePictureHandler,
 } from './account_controller.js';
 import updatePasswordHandler from './password_controller.js';
 import createReportHandler from './report_controller.js';
@@ -47,4 +48,5 @@ export {
   getFoodRecommendationHandler,
   getBuyerAccountHandler,
   updateBuyerAccountHandler,
+  updateBuyerProfilePictureHandler,
 };
