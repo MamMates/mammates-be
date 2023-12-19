@@ -10,7 +10,9 @@ const createOrderDetail = () => {
 
 const ordersDetail = () => {
   const orderList = {
-    id: 0,
+    id: undefined,
+    invoice: undefined,
+    time: undefined,
     store: '',
     total: 0,
     status: 0,

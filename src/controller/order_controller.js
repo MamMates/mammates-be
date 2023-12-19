@@ -69,6 +69,12 @@ const getAllBuyerOrdersHandler = async (req, res) => {
 const getSellerOrdersHandler = async (req, res) => {
   let response;
   const { decodedToken } = res.locals;
+  const reqQuery = req.query;
+
+  const orderCondition = {};
+  if (reqQuery.id) {
+    orderCondition.id = reqQuery.id;
+  }
 
   const customer = await Customer.findOne({
     where: {
@@ -89,6 +95,7 @@ const getSellerOrdersHandler = async (req, res) => {
   const rawOrders = await Order.findAll({
     where: {
       CustomerId: customer.id,
+      ...orderCondition,
     },
     include: [
       {
@@ -115,8 +122,15 @@ const getSellerOrdersHandler = async (req, res) => {
     const { orderList } = ordersDetail();
     const prefixLink = 'https://storage.googleapis.com/';
     const suffixLink = '?ignoreCache=1';
+    let orderDate = new Date(order.createdAt);
+    orderDate.setHours(orderDate.getHours() + 8);
+    orderDate = orderDate.toISOString().slice(0, 19).replace('T', ' ');
+    orderDate += ' WITA';
 
-    orderList.id = order.id;
+    orderList.id = reqQuery.id ? undefined : order.id;
+    orderList.invoice = reqQuery.id ? `MM/INV/${customer.id}/${order.id}` : undefined;
+    orderList.time = reqQuery.id ? orderDate : undefined;
+
     orderList.store = order.Merchant.store;
     orderList.total = order.total_price;
     orderList.status = order.OrderStatusId;
@@ -136,7 +150,8 @@ const getSellerOrdersHandler = async (req, res) => {
     return orderList;
   });
 
-  response = Response.defaultOK('success get orders', { orders });
+  const responseData = reqQuery.id ? { order: orders[0] } : { orders };
+  response = Response.defaultOK('success get orders', responseData);
   return res.status(response.code).send(response);
 };
 
