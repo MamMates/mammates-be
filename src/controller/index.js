@@ -10,6 +10,7 @@ import {
   updateSingleFoodHandler,
   deleteSingleFood,
   findFoodsHandler,
+  getFoodRecommendationHandler,
 } from './food_controller.js';
 import {
   getStoreDetailHandler,
@@ -40,4 +41,5 @@ export {
   mammatesHandler,
   findFoodsHandler,
   getAllBuyerOrdersHandler,
+  getFoodRecommendationHandler,
 };
