@@ -28,6 +28,7 @@ import {
   crateBuyerOrderHandler,
   getBuyerOrdersHandler,
   getRecentOrder,
+  getSellerOrdersHandler,
 } from './order_controller.js';
 
 export {
@@ -54,4 +55,5 @@ export {
   updateBuyerAccountHandler,
   updateBuyerProfilePictureHandler,
   getRecentOrder,
+  getSellerOrdersHandler,
 };
