@@ -10,7 +10,7 @@ import {
 } from '../models/index.js';
 import { sequelize } from '../pkg/index.js';
 
-const getAllBuyerOrdersHandler = async (req, res) => {
+const crateBuyerOrderHandler = async (req, res) => {
   let response;
   const { decodedToken } = res.locals;
   const reqBody = req.body;
@@ -66,7 +66,7 @@ const getAllBuyerOrdersHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
-const getSellerOrdersHandler = async (req, res) => {
+const getBuyerOrdersHandler = async (req, res) => {
   let response;
   const { decodedToken } = res.locals;
   const reqQuery = req.query;
@@ -155,4 +155,4 @@ const getSellerOrdersHandler = async (req, res) => {
   return res.status(response.code).send(response);
 };
 
-export { getAllBuyerOrdersHandler, getSellerOrdersHandler };
+export { crateBuyerOrderHandler, getBuyerOrdersHandler };

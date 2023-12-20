@@ -216,6 +216,7 @@ const customer = {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: DataTypes.STRING,
   },
   options: {
     tableName: 'customers',
