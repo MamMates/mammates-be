@@ -8,6 +8,7 @@ import {
   getSingleFoodHandler,
   updateSingleFoodHandler,
   findFoodsHandler,
+  getFoodRecommendationHandler,
 } from '../controller/index.js';
 
 const upload = multer({
@@ -43,6 +44,7 @@ foodRouter.put('/:foodId', verifyToken(1), foodUpload, updateSingleFoodHandler);
 foodRouter.delete('/:foodId', verifyToken(1), deleteSingleFood);
 
 foodRouter.get('/find', verifyToken(2), findFoodsHandler);
+foodRouter.get('/recommendation', verifyToken(2), getFoodRecommendationHandler);
 
 foodRouter.use(fileUploadError);
 

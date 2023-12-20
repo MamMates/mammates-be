@@ -27,7 +27,7 @@ const mammatesHandler = async (req, res) => {
     return res.status(response.code).json(response);
   }
 
-  const urlEndpoint = `${process.env.ML_ENDPOINT}?province=${merchant.province.toLowerCase()}`;
+  const urlEndpoint = `${process.env.ML_PREDICTION}?province=${merchant.province.toLowerCase()}`;
   const formData = new FormData();
   const image = new File([reqFile.buffer], reqFile.originalname, { type: 'image/jpg' });
   formData.set('image', image, reqFile.originalname);

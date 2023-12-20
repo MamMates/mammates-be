@@ -5,22 +5,26 @@ import {
 } from './auth_controller.js';
 import {
   addNewFoodHandler,
+  deleteSingleFood,
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
-  deleteSingleFood,
   findFoodsHandler,
+  getFoodRecommendationHandler,
 } from './food_controller.js';
 import {
   getStoreDetailHandler,
   getSellerAccountHandler,
   updateSellerDetailHandler,
   updateSellerProfilePictureHandler,
-} from './seller_account_controller.js';
+  getBuyerAccountHandler,
+  updateBuyerAccountHandler,
+  updateBuyerProfilePictureHandler,
+} from './account_controller.js';
 import updatePasswordHandler from './password_controller.js';
 import createReportHandler from './report_controller.js';
 import mammatesHandler from './mammates_controller.js';
-import { getAllBuyerOrdersHandler } from './order_controller.js';
+import { crateBuyerOrderHandler, getBuyerOrdersHandler } from './order_controller.js';
 
 export {
   sellerRegisterHandler,
@@ -39,5 +43,10 @@ export {
   createReportHandler,
   mammatesHandler,
   findFoodsHandler,
-  getAllBuyerOrdersHandler,
+  crateBuyerOrderHandler,
+  getBuyerOrdersHandler,
+  getFoodRecommendationHandler,
+  getBuyerAccountHandler,
+  updateBuyerAccountHandler,
+  updateBuyerProfilePictureHandler,
 };
