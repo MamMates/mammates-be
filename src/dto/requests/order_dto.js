@@ -28,4 +28,18 @@ const ordersDetail = () => {
   return { orderList, foodList };
 };
 
-export { createOrderDetail, ordersDetail };
+const recentOrder = () => {
+  const data = {
+    id: 0,
+    buyer: '',
+    status: 0,
+  };
+
+  return data;
+};
+
+export {
+  createOrderDetail,
+  ordersDetail,
+  recentOrder,
+};

@@ -1,6 +1,6 @@
 import { createOrderValidator } from '../validators/index.js';
 import Response from '../dto/responses/index.js';
-import { createOrderDetail, ordersDetail } from '../dto/requests/index.js';
+import { createOrderDetail, ordersDetail, recentOrder } from '../dto/requests/index.js';
 import {
   Customer,
   Food,
@@ -155,4 +155,60 @@ const getBuyerOrdersHandler = async (req, res) => {
   return res.status(response.code).send(response);
 };
 
-export { crateBuyerOrderHandler, getBuyerOrdersHandler };
+const getRecentOrder = async (req, res) => {
+  let response;
+  const { decodedToken } = res.locals;
+
+  const merchant = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    attributes: ['id'],
+  })
+    .catch(() => {
+      response = Response.defaultInternalError(null);
+      return res.status(response.code).json(response);
+    });
+
+  if (!merchant) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  const rawOrders = await Order.findAll({
+    where: {
+      MerchantId: merchant.id,
+    },
+    order: [
+      ['createdAt', 'DESC'],
+    ],
+    include: {
+      model: Customer,
+      attributes: ['name'],
+    },
+    limit: 3,
+  })
+    .catch((error) => error);
+  if (rawOrders instanceof Error) {
+    response = Response.defaultInternalError({ error: rawOrders });
+    return res.status(response.code).json(response);
+  }
+
+  const orders = rawOrders.map((rawOrder) => {
+    const recent = recentOrder();
+    recent.id = rawOrder.id;
+    recent.buyer = rawOrder.Customer.name;
+    recent.status = rawOrder.OrderStatusId;
+
+    return recent;
+  });
+
+  response = Response.defaultOK('success get recent order', { orders });
+  return res.status(response.code).json(response);
+};
+
+export {
+  crateBuyerOrderHandler,
+  getBuyerOrdersHandler,
+  getRecentOrder,
+};
