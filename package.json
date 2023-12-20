@@ -21,7 +21,7 @@
   "license": "ISC",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "node src/app.js",
+    "dev": "bun src/app.js",
     "lint": "eslint ./",
     "mon": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
