@@ -24,7 +24,13 @@ import {
 import updatePasswordHandler from './password_controller.js';
 import createReportHandler from './report_controller.js';
 import mammatesHandler from './mammates_controller.js';
-import { crateBuyerOrderHandler, getBuyerOrdersHandler } from './order_controller.js';
+import {
+  crateBuyerOrderHandler,
+  getBuyerOrdersHandler,
+  getRecentOrder,
+  getSellerOrdersHandler,
+  updateOrderStatusHandler,
+} from './order_controller.js';
 
 export {
   sellerRegisterHandler,
@@ -49,4 +55,7 @@ export {
   getBuyerAccountHandler,
   updateBuyerAccountHandler,
   updateBuyerProfilePictureHandler,
+  getRecentOrder,
+  getSellerOrdersHandler,
+  updateOrderStatusHandler,
 };

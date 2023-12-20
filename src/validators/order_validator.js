@@ -27,4 +27,14 @@ const createOrderValidator = (body) => {
   return getErrorList(error);
 };
 
-export default createOrderValidator;
+const orderStatusValidator = (body) => {
+  const orderStatus = Joi.object({
+    status: Joi.number()
+      .required(),
+  });
+
+  const error = orderStatus.validate(body, { abortEarly: false });
+  return getErrorList(error);
+};
+
+export { createOrderValidator, orderStatusValidator };

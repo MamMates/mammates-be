@@ -7,7 +7,7 @@ import foodValidator from './food_validator.js';
 import { sellerUpdateValidator, buyerUpdateValidator } from './account_validator.js';
 import passwordValidator from './password_validator.js';
 import reportValidator from './report_validator.js';
-import createOrderValidator from './order_validator.js';
+import { createOrderValidator, orderStatusValidator } from './order_validator.js';
 
 export {
   sellerRegisterValidator,
@@ -19,4 +19,5 @@ export {
   passwordValidator,
   reportValidator,
   createOrderValidator,
+  orderStatusValidator,
 };
