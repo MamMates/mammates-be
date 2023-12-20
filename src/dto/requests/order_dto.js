@@ -8,7 +8,7 @@ const createOrderDetail = () => {
   return data;
 };
 
-const ordersDetail = () => {
+const buyerOrdersDetail = () => {
   const orderList = {
     id: undefined,
     invoice: undefined,
@@ -38,8 +38,29 @@ const recentOrder = () => {
   return data;
 };
 
+const sellerOrdersDetail = () => {
+  const orderList = {
+    id: undefined,
+    invoice: undefined,
+    time: undefined,
+    buyer: '',
+    total: 0,
+    status: 0,
+    foods: [],
+  };
+  const foodList = {
+    name: '',
+    quantity: 0,
+    price: 0,
+    image: '',
+  };
+
+  return { orderList, foodList };
+};
+
 export {
   createOrderDetail,
-  ordersDetail,
+  buyerOrdersDetail,
+  sellerOrdersDetail,
   recentOrder,
 };

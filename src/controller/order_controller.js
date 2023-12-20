@@ -1,6 +1,6 @@
 import { createOrderValidator } from '../validators/index.js';
 import Response from '../dto/responses/index.js';
-import { createOrderDetail, ordersDetail, recentOrder } from '../dto/requests/index.js';
+import { createOrderDetail, buyerOrdersDetail, recentOrder } from '../dto/requests/index.js';
 import {
   Customer,
   Food,
@@ -119,7 +119,7 @@ const getBuyerOrdersHandler = async (req, res) => {
   }
 
   const orders = rawOrders.map((order) => {
-    const { orderList } = ordersDetail();
+    const { orderList } = buyerOrdersDetail();
     const prefixLink = 'https://storage.googleapis.com/';
     const suffixLink = '?ignoreCache=1';
     let orderDate = new Date(order.createdAt);
@@ -136,7 +136,7 @@ const getBuyerOrdersHandler = async (req, res) => {
     orderList.status = order.OrderStatusId;
 
     const foods = order.OrderDetails.map((orderDetail) => {
-      const { foodList } = ordersDetail();
+      const { foodList } = buyerOrdersDetail();
       foodList.name = orderDetail.Food.name;
       foodList.quantity = orderDetail.quantity;
       foodList.price = orderDetail.price;
