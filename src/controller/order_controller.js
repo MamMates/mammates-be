@@ -227,7 +227,7 @@ const getSellerOrdersHandler = async (req, res) => {
 
   const orderCondition = {};
   if (reqQuery.id) { orderCondition.id = reqQuery.id; }
-  if (reqQuery.s) { orderCondition.status = reqQuery.s; }
+  if (reqQuery.s) { orderCondition.OrderStatusId = reqQuery.s; }
 
   const merchant = await Merchant.findOne({
     where: {
