@@ -29,6 +29,7 @@ import {
   getBuyerOrdersHandler,
   getRecentOrder,
   getSellerOrdersHandler,
+  updateOrderStatusHandler,
 } from './order_controller.js';
 
 export {
@@ -56,4 +57,5 @@ export {
   updateBuyerProfilePictureHandler,
   getRecentOrder,
   getSellerOrdersHandler,
+  updateOrderStatusHandler,
 };

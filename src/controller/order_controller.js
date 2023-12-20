@@ -1,4 +1,4 @@
-import { createOrderValidator } from '../validators/index.js';
+import { createOrderValidator, orderStatusValidator } from '../validators/index.js';
 import Response from '../dto/responses/index.js';
 import {
   createOrderDetail,
@@ -316,9 +316,63 @@ const getSellerOrdersHandler = async (req, res) => {
   return res.status(response.code).send(response);
 };
 
+const updateOrderStatusHandler = async (req, res) => {
+  let response;
+  const { decodedToken } = res.locals;
+  const { orderId } = req.params;
+  const reqBody = req.body;
+
+  if (orderId <= 0) {
+    response = Response.defaultBadRequest({ error: 'Make sure request param included' });
+    return res.status(response.code).json(response);
+  }
+
+  const reqError = orderStatusValidator(reqBody);
+  if (reqError.length !== 0) {
+    response = Response.defaultBadRequest({ errors: reqError });
+    return res.status(response.code).json(response);
+  }
+
+  const merchant = await Merchant.findOne({
+    where: {
+      AccountId: decodedToken.id,
+    },
+    attributes: ['id'],
+  })
+    .catch((error) => {
+      response = Response.defaultInternalError({ error });
+      return res.status(response.code).json(response);
+    });
+  if (!merchant) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  const order = await Order.findOne({
+    where: {
+      id: orderId,
+      MerchantId: merchant.id,
+    },
+  })
+    .catch((error) => {
+      response = Response.defaultInternalError({ error });
+      return res.status(response.code).json(response);
+    });
+  if (!order) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
+
+  await order.update({ OrderStatusId: reqBody.status });
+
+  response = Response.defaultOK('status updated successfully', null);
+  return res.status(response.code).json(response);
+};
+
 export {
   crateBuyerOrderHandler,
   getBuyerOrdersHandler,
   getRecentOrder,
   getSellerOrdersHandler,
+  updateOrderStatusHandler,
 };
