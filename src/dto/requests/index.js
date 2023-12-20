@@ -1,9 +1,13 @@
-import { allFoods, singleFood } from './food_dto.js';
-import allOrders from './order_dto.js';
-import { sellerAccount, storeDetail } from './seller_account_dto.js';
+import { allFoods, findFoods, singleFood } from './food_dto.js';
+import { storeDetail, sellerAccount } from './seller_account_dto.js';
+import { createOrderDetail, ordersDetail } from './order_dto.js';
 
 export {
-  allFoods, allOrders, sellerAccount, singleFood,
-  storeDetail
+  allFoods,
+  findFoods,
+  singleFood,
+  storeDetail,
+  sellerAccount,
+  createOrderDetail,
+  ordersDetail,
 };
-

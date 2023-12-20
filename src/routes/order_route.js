@@ -1,11 +1,10 @@
 import express from 'express';
-import {
-   getAllOrderHandler,
-} from '../controller/index.js';
-import { verifyToken } from '../middlewares';
+import { verifyToken } from '../middlewares/index.js';
+import { getAllBuyerOrdersHandler, getSellerOrdersHandler } from '../controller/order_controller.js';
 
 const orderRouter = express.Router();
 
-orderRouter.get('/', verifyToken(1), getAllOrderHandler);
+orderRouter.post('/buyer', verifyToken(2), getAllBuyerOrdersHandler);
+orderRouter.get('/buyer', verifyToken(2), getSellerOrdersHandler);
 
 export default orderRouter;

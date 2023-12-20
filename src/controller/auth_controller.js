@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import {
   sellerRegisterValidator,
+  buyerRegisterValidator,
   loginValidator,
 } from '../validators/index.js';
 import {
   Account,
   Merchant,
+  Customer,
 } from '../models/index.js';
 import {
   sequelize,
@@ -51,11 +53,48 @@ const sellerRegisterHandler = async (req, res) => {
       AccountId: userId,
     }, { transaction: t });
   };
-  await sequelize.transaction(accountTransaction)
-    .catch((error) => {
-      response = Response.defaultConflict({ error });
-      return res.status(response.code).json(response);
-    });
+  const result = await sequelize.transaction(accountTransaction)
+    .catch((error) => error);
+  if (result instanceof Error) {
+    response = Response.defaultConflict({ error: result.errors[0].message });
+    return res.status(response.code).json(response);
+  }
+
+  response = Response.defaultCreated('register success', null);
+  return res.status(response.code).json(response);
+};
+
+const buyerRegisterHandler = async (req, res) => {
+  let response;
+  const reqBody = req.body;
+
+  const reqError = buyerRegisterValidator(reqBody);
+  if (reqError.length !== 0) {
+    response = Response.defaultBadRequest({ errors: reqError });
+    return res.status(response.code).json(response);
+  }
+
+  const userId = uuidv4();
+  const password = await createBcrypt(reqBody.password);
+
+  const accountTransaction = async (t) => {
+    await Account.create({
+      id: userId,
+      email: reqBody.email,
+      password,
+      RoleId: 2,
+    }, { transaction: t });
+    await Customer.create({
+      name: reqBody.name,
+      AccountId: userId,
+    }, { transaction: t });
+  };
+  const result = await sequelize.transaction(accountTransaction)
+    .catch((error) => error);
+  if (result instanceof Error) {
+    response = Response.defaultConflict({ error: result.errors[0].message });
+    return res.status(response.code).json(response);
+  }
 
   response = Response.defaultCreated('register success', null);
   return res.status(response.code).json(response);
@@ -77,9 +116,14 @@ const loginHandler = async (req, res) => {
     },
   })
     .catch(() => {
-      response = Response.defaultNotFound(null);
+      response = Response.defaultInternalError(null);
       return res.status(response.code).json(response);
     });
+
+  if (!account) {
+    response = Response.defaultNotFound(null);
+    return res.status(response.code).json(response);
+  }
 
   const verifiedPass = await checkBcrypt(account.password, reqBody.password);
   if (!verifiedPass) {
@@ -94,4 +138,8 @@ const loginHandler = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
-export { sellerRegisterHandler, loginHandler };
+export {
+  sellerRegisterHandler,
+  buyerRegisterHandler,
+  loginHandler,
+};

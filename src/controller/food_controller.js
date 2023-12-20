@@ -1,10 +1,11 @@
+import { Op } from 'sequelize';
 import { foodValidator } from '../validators/index.js';
 import { Food, Merchant } from '../models/index.js';
 import Response from '../dto/responses/index.js';
 import { createFilename } from '../utils/index.js';
 import uploadFileToBucket from '../pkg/storage.js';
 import sequelize from '../pkg/orm.js';
-import { allFoods, singleFood } from '../dto/requests/index.js';
+import { allFoods, findFoods, singleFood } from '../dto/requests/index.js';
 
 const addNewFoodHandler = async (req, res) => {
   let response;
@@ -253,10 +254,64 @@ const deleteSingleFood = async (req, res) => {
   return res.status(response.code).json(response);
 };
 
+const findFoodsHandler = async (req, res) => {
+  let response;
+  const reqQuery = req.query;
+
+  if (!reqQuery.q && !reqQuery.c && !reqQuery.s) {
+    response = Response.defaultBadRequest({ error: 'Query must be provided' });
+    return res.status(response.code).json(response);
+  }
+
+  const foodCondition = {};
+  if (reqQuery.q) foodCondition.name = { [Op.substring]: reqQuery.q };
+  if (reqQuery.c) foodCondition.FoodCategoryId = reqQuery.c;
+  if (reqQuery.s) foodCondition.MerchantId = reqQuery.s;
+
+  const rawFoods = await Food.findAll({
+    where: foodCondition,
+    attributes: ['id', 'name', 'rating', 'price', 'image', 'last_photo', 'updatedAt', 'FoodCategoryId'],
+    include: {
+      model: Merchant,
+      attributes: ['id', 'store', 'line', 'subdistrict', 'city', 'province'],
+    },
+  });
+
+  const foods = rawFoods.reduce((result, food) => {
+    const now = new Date();
+    const lastUpdateDate = new Date(food.updatedAt);
+    const prefixLink = 'https://storage.googleapis.com/';
+    const suffixLink = '?ignoreCache=1';
+
+    if ((now - lastUpdateDate) / 3_600_000 <= process.env.VALID_FOOD_DURATION) {
+      const findFoodDto = findFoods();
+      findFoodDto.id = food.id;
+      findFoodDto.name = food.name;
+      findFoodDto.price = food.price;
+      findFoodDto.mam_rates = food.rating;
+      findFoodDto.image = food.image !== null
+        ? `${prefixLink}${process.env.BUCKET_NAME}/${food.image}${suffixLink}`
+        : `${prefixLink}${process.env.BUCKET_NAME}/${food.last_photo}${suffixLink}`;
+
+      const merchant = food.Merchant;
+      findFoodDto.seller.id = merchant.id;
+      findFoodDto.seller.name = merchant.store;
+      findFoodDto.seller.address = `${merchant.line}, ${merchant.subdistrict}, ${merchant.city}, ${merchant.province}`;
+
+      result.push(findFoodDto);
+    }
+    return result;
+  }, []);
+
+  response = Response.defaultOK('success get foods', { foods });
+  return res.status(response.code).send(response);
+};
+
 export {
   addNewFoodHandler,
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
   deleteSingleFood,
+  findFoodsHandler,
 };

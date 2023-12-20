@@ -26,6 +26,25 @@ const sellerRegisterValidator = (body) => {
   return getErrorList(error);
 };
 
+const buyerRegisterValidator = (body) => {
+  const buyerRegister = Joi.object({
+    name: Joi.string()
+      .min(1)
+      .required(),
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string()
+      .min(8)
+      .required(),
+    password_repeat: Joi.ref('password'),
+  })
+    .with('password', 'password_repeat');
+
+  const error = buyerRegister.validate(body, { abortEarly: false });
+  return getErrorList(error);
+};
+
 const loginValidator = (body) => {
   const login = Joi.object({
     email: Joi.string()
@@ -40,4 +59,8 @@ const loginValidator = (body) => {
   return getErrorList(error);
 };
 
-export { sellerRegisterValidator, loginValidator };
+export {
+  sellerRegisterValidator,
+  buyerRegisterValidator,
+  loginValidator,
+};

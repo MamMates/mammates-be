@@ -29,6 +29,7 @@ const account = {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -139,10 +140,6 @@ const order = {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    order_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
   },
   options: {
     tableName: 'orders',
@@ -200,13 +197,28 @@ const transaction = {
       autoIncrement: true,
     },
     tax: DataTypes.FLOAT,
-    transaction_date: {
-      type: DataTypes.DATE,
+  },
+  options: {
+    tableName: 'transactions',
+  },
+};
+
+const customer = {
+  name: 'Customer',
+  attributes: {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
   options: {
-    tableName: 'transactions',
+    tableName: 'customers',
   },
 };
 
@@ -252,4 +264,5 @@ export {
   orderDetail,
   transaction,
   report,
+  customer,
 };

@@ -7,6 +7,7 @@ import {
   getAllFoodsHandler,
   getSingleFoodHandler,
   updateSingleFoodHandler,
+  findFoodsHandler,
 } from '../controller/index.js';
 
 const upload = multer({
@@ -37,9 +38,11 @@ const foodRouter = express.Router();
 
 foodRouter.post('/', verifyToken(1), foodUpload, addNewFoodHandler);
 foodRouter.get('/', verifyToken(1), getAllFoodsHandler);
-foodRouter.get('/:foodId', verifyToken(1), getSingleFoodHandler);
+foodRouter.get('/:foodId(\\d+)', verifyToken(1), getSingleFoodHandler);
 foodRouter.put('/:foodId', verifyToken(1), foodUpload, updateSingleFoodHandler);
 foodRouter.delete('/:foodId', verifyToken(1), deleteSingleFood);
+
+foodRouter.get('/find', verifyToken(2), findFoodsHandler);
 
 foodRouter.use(fileUploadError);
 
